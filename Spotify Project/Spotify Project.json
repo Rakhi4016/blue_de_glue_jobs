@@ -1,0 +1,41 @@
+{
+  "name" : "Spotify Project",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::664418976840:role/glue-s3-access",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-664418976840-us-east-1/scripts/Spotify Project.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-664418976840-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-664418976840-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 5,
+  "timeout" : 480,
+  "maxCapacity" : 5.0,
+  "glueVersion" : "5.0",
+  "numberOfWorkers" : 5,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1742508909991\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://spotify-project-rakesh-mine/staging/track.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"track\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"track_id\",\"Type\":\"string\"},{\"Name\":\"track_popularity\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://spotify-project-rakesh-mine/staging/track.csv\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1742508473888\":{\"Join\":{\"Columns\":[{\"From\":\"node-1742508314072\",\"Keys\":[[\"artist_id\"]]},{\"From\":\"node-1742508311323\",\"Keys\":[[\"id\"]]}],\"Inputs\":[\"node-1742508314072\",\"node-1742508311323\"],\"JoinType\":\"equijoin\",\"Name\":\"Join Album and Artist\"}},\"node-1742508311323\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://spotify-project-rakesh-mine/staging/artists.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"artists\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"id\",\"Type\":\"string\"},{\"Name\":\"name\",\"Type\":\"string\"},{\"Name\":\"artist_popularity\",\"Type\":\"string\"},{\"Name\":\"followers\",\"Type\":\"string\"},{\"Name\":\"genre\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://spotify-project-rakesh-mine/staging/artists.csv\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1742509371273\":{\"S3GlueParquetTarget\":{\"AutoDataQuality\":{\"EvaluationContext\":\"EvaluateDataQuality_node1742508292585\",\"IsEnabled\":true},\"Compression\":\"snappy\",\"Inputs\":[\"node-1742509338870\"],\"Name\":\"destination\",\"PartitionKeys\":[],\"Path\":\"s3://spotify-project-rakesh-mine/datawarehouse/\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false}}},\"node-1742509242461\":{\"Join\":{\"Columns\":[{\"From\":\"node-1742508909991\",\"Keys\":[[\"track_id\"]]},{\"From\":\"node-1742508473888\",\"Keys\":[[\"track_id\"]]}],\"Inputs\":[\"node-1742508909991\",\"node-1742508473888\"],\"JoinType\":\"equijoin\",\"Name\":\"Join with tracks\"}},\"node-1742509338870\":{\"DropFields\":{\"Inputs\":[\"node-1742509242461\"],\"Name\":\"Drop Fields\",\"Paths\":[[\".track_id\"],[\"id\"]]}},\"node-1742508314072\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://spotify-project-rakesh-mine/staging/albums.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"albums\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"track_name\",\"Type\":\"string\"},{\"Name\":\"track_id\",\"Type\":\"string\"},{\"Name\":\"duration_ms\",\"Type\":\"string\"},{\"Name\":\"album_name\",\"Type\":\"string\"},{\"Name\":\"release_date\",\"Type\":\"string\"},{\"Name\":\"label\",\"Type\":\"string\"},{\"Name\":\"album_popularity\",\"Type\":\"string\"},{\"Name\":\"album_id\",\"Type\":\"string\"},{\"Name\":\"artist_id\",\"Type\":\"string\"},{\"Name\":\"duration_sec\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://spotify-project-rakesh-mine/staging/albums.csv\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "blue_de_glue_jobs",
+    "branch" : "dev",
+    "folder" : "Spotify Project"
+  }
+}
